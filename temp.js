@@ -64,8 +64,7 @@ const addToMainList = () => {
 
   (entry.id = Date.now() + '-item'),
     (entry.value = x),
-    console.log('globalStore()', globalStore());
-  globalStore().arr.push(entry);
+    globalStore().arr.push(entry);
   const markup = `<li id="${
     globalStore().arr[globalStore().arr.length - 1].id
   }">${

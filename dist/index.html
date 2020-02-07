@@ -10,21 +10,29 @@
   <body>
     <div class="container">
       <div class="main-list-container">
-        <h3>Main List</h3>
+        <h3>To-Do List</h3>
         <input id="list_name"></input>
-        <button id="enter_data">Enter</button>
+        <button id="enter_data">Create a New TO DO List</button>
         <div>
-          <ul class = "main-list-items">
-          </ul>
+          <div class = "main-list-items">
+            <!-- <button id="delete-all">delete All Lists</button> -->
+          </div>
         </div>     
       </div >
-      <div class="sub-list-container">
-        <div class="sub-lists">
-          <h3>Sub Lists</h3>
+      <div class="todo-tasks-container">
+          <h3>Task to be done</h3>
+          <div class="list-name-container">
+            <h4 class="list-name"></h4>
+          </div>
           <input id="sub-input" type="textarea">
-          <button type="btn" id="sub-entry-btn">New Entry</button>
-          <ul class="sub-list-items">
-          </ul>
+          <button type="btn" id="create-task-btn">Create A Task</button>
+          <div class="todo-items-container">
+            <div class="flex-button">
+            <button id="delete-all">Delete All</button>
+            <button id='strike-all'>Mark All as Done</button>
+         </div>
+            <div class="temp-todo-task-list-holder">
+          
         </div>
       </div>
     </div>
