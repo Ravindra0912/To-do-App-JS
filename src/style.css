@@ -1,3 +1,6 @@
+body {
+  font-family: Sans-serif;
+}
 .sublist-text-box {
   width: 450px;
   cursor: text;
@@ -78,4 +81,8 @@ body {
   background-color: darkcyan;
   font-weight: bold;
   color: white;
+}
+.temp-todo-task-list-holder {
+  overflow: scroll;
+  height: 360px;
 }

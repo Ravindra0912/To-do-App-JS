@@ -30,6 +30,16 @@ class EventListener {
         }
       });
 
+    document
+      .querySelector('.main-list-container')
+      .addEventListener('keypress', e => {
+        console.log('in the top', e);
+      });
+    document
+      .querySelector('.main-list-container')
+      .addEventListener('click', e => {
+        console.log('in the top', e);
+      });
     document.querySelector('#create-task-btn').addEventListener('click', e => {
       console.log('here');
       SubList.addToSubList(e);
@@ -38,7 +48,8 @@ class EventListener {
       if (e.keyCode === 13) SubList.addToSubList(e);
     });
     document.querySelector('.main-list-items').addEventListener('click', e => {
-      console.log('comeshere', e.target.id);
+      console.log('comeshere', e);
+      console.log(/item/.test(e.target.parentNode.id));
       if (e.toElement.id == 'delete-main-list-item') {
         MainList.deleteItem(e);
       } else if (/item/.test(e.target.id)) {

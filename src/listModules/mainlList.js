@@ -25,9 +25,9 @@ class MainList {
       globalStore.listItems.push(entry);
     const markup = `<div class="main-list-item flex"id="${
       globalStore.listItems[globalStore.listItems.length - 1].id
-    }">${
+    }"><div>${
       globalStore.listItems[globalStore.listItems.length - 1].value
-    }<button id="delete-main-list-item">Delete</button></div>`;
+    }</div><button id="delete-main-list-item">Delete</button></div>`;
     document
       .querySelector('.main-list-items')
       .insertAdjacentHTML('beforeend', markup);

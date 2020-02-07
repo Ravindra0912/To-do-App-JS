@@ -21,7 +21,6 @@ class SubList {
       e.path[1].id !== globalStore.state &&
       document.querySelector('.list-name')
     ) {
-      console.log('comse - 2');
       parent = document.querySelector('.list-name-container');
       child = document.querySelector('.list-name');
       parent.removeChild(child);
@@ -38,7 +37,7 @@ class SubList {
   }
   getSublistItemHTML(id, value, striked) {
     if (striked)
-      return `<div id=${id} class = "sub-task-item flex" ><input type="checkbox" checked="true" id="strike"><div contentEditable="false"><strike>${value}</strike></div><button id="delete-tasks">delete</button></div>`;
+      return `<div id=${id} class = "sub-task-item flex" ><input type="checkbox" checked="true" id="strike"><div class="sublist-text-box"><strike>${value}</strike></div><button id="delete-tasks">delete</button></div>`;
     else
       return `<div id=${id} class = "sub-task-item flex"><input type="checkbox" id="strike"><div class="sublist-text-box" contentEditable="true" >${value}</div> <button id="delete-tasks">delete</button></div>`;
   }
@@ -49,8 +48,6 @@ class SubList {
     selectedList.sublist.forEach(elem => {
       elem.striked = true;
     });
-    console.log();
-    // this.displaySubList(e);
     let parent = document.querySelector('.todo-items-container');
     let child = document.querySelector('.temp-todo-task-list-holder');
     parent.removeChild(child);
@@ -74,19 +71,20 @@ class SubList {
       elem => elem.id === e.target.parentElement.id
     );
     if (e.target.checked) {
+      e.target.nextElementSibling.contentEditable = 'false';
+
       currentTask.striked = true;
-      document.getElementById(currentTask.id).contentEditable = 'false';
       let z = e.target.nextElementSibling.textContent.strike();
       e.target.nextElementSibling.innerHTML = z;
+      document.querySelector('.sublist-text-box');
     } else if (!e.target.checked) {
-      document.getElementById(currentTask.id).contentEditable = 'true';
+      e.target.nextElementSibling.contentEditable = 'true';
       currentTask.striked = false;
       e.target.nextElementSibling.innerHTML =
         e.target.nextElementSibling.innerText;
     }
   }
   deleteItem(e) {
-    console.log(e);
     let temp = globalStore.listItems.find(
       elem => elem.id === globalStore.state
     );
@@ -102,7 +100,6 @@ class SubList {
   }
 
   addToSubList() {
-    console.log('state', globalStore.state);
     let subEntry = {};
     let a = globalStore.listItems.filter(elem => elem.id === globalStore.state);
     let elem = a[0];
@@ -112,14 +109,13 @@ class SubList {
     subEntry.id = Date.now() + '-sub-item';
     subEntry.striked = false;
     elem.sublist.push(subEntry);
-    let markup = this.getSublistItemHTML(subEntry.id, input);
+    let markup = this.getSublistItemHTML(subEntry.id, input, subEntry.striked);
     document
       .querySelector('.temp-todo-task-list-holder')
       .insertAdjacentHTML('beforeend', markup);
   }
 
   saveChanges(e) {
-    console.log('check', e);
     let currentListSelected = globalStore.listItems.find(
       elem => elem.id === globalStore.state
     );
@@ -139,7 +135,6 @@ class SubList {
     let currentElement = globalStore.listItems.find(elem => {
       return e.target && elem.id === e.target.id;
     });
-    console.log('currentElement', currentElement);
     if (currentElement) {
       globalStore.state = currentElement.id;
     }
