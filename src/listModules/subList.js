@@ -14,27 +14,33 @@ class SubList {
       let element = document.getElementById(globalStore.state);
       element.classList.remove('active');
     }
-    globalStore.state = e.target.id;
-    let parent;
-    let child;
-    if (
-      e.path[1].id !== globalStore.state &&
-      document.querySelector('.list-name')
-    ) {
-      parent = document.querySelector('.list-name-container');
-      child = document.querySelector('.list-name');
+    globalStore.state = e.target.id ? e.target.id : e.target.parentElement.id; // identifier for current element is in the parent div
+
+    if (document.querySelector('.list-name')) {
+      let parent = document.querySelector('.list-name-container');
+      let child = document.querySelector('.list-name');
       parent.removeChild(child);
     }
     document.querySelector('#sub-input').focus();
     if (globalStore.state !== null) {
-      document
-        .querySelector('.list-name-container')
-        .insertAdjacentHTML(
-          'beforeend',
-          `<h4 class="list-name">${e.target.firstElementChild.innerHTML}</h4>`
-        );
+      if (e.target.id) {
+        document
+          .querySelector('.list-name-container')
+          .insertAdjacentHTML(
+            'beforeend',
+            `<h4 class="list-name">${e.target.firstElementChild.innerHTML}</h4>`
+          );
+      } else {
+        document
+          .querySelector('.list-name-container')
+          .insertAdjacentHTML(
+            'beforeend',
+            `<h4 class="list-name">${e.target.innerText}</h4>`
+          );
+      }
     }
   }
+
   getSublistItemHTML(id, value, striked) {
     if (striked)
       return `<div id=${id} class = "sub-task-item flex" ><input type="checkbox" checked="true" id="strike"><div class="sublist-text-box"><strike>${value}</strike></div><button id="delete-tasks">delete</button></div>`;
@@ -126,15 +132,18 @@ class SubList {
   }
 
   displaySubList(e) {
+    console.log('e inside func', e);
     let parent = document.querySelector('.todo-items-container');
     let child = document.querySelector('.temp-todo-task-list-holder');
     parent.removeChild(child);
     let temp = `<div class="temp-todo-task-list-holder"></div>`;
     parent.insertAdjacentHTML('beforeend', temp);
-
+    console.log(e.target.parentElement.id);
     let currentElement = globalStore.listItems.find(elem => {
-      return e.target && elem.id === e.target.id;
+      if (e.target.id) return e.target && elem.id === e.target.id;
+      else return e.target.parentElement.id === elem.id;
     });
+    console.log('currentElem', currentElement);
     if (currentElement) {
       globalStore.state = currentElement.id;
     }
