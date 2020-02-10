@@ -1,6 +1,6 @@
 let globalStore = {
   listItems: [],
-  state: null
+  selectedList: null
 };
 
 export default globalStore;

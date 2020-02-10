@@ -1,18 +1,41 @@
 import MainList from './listModules/mainlList';
 import SubList from './listModules/subList';
-import globalStore from './store';
 import subList from './listModules/subList';
 class EventListener {
   setupEventListeners() {
-    document.querySelector('.todo-items-container').addEventListener(
-      'keypress',
-      e => {
-        // e.stopPropagation();
-        SubList.saveChanges(e);
-      },
-      false
-    );
+    document
+      .querySelector('.list-name-input')
+      .addEventListener('keypress', e => {
+        if (e.keyCode === 13) MainList.addToMainList();
+      });
+    document.querySelector('.add-listname-btn').addEventListener('click', e => {
+      console.log(e);
+      MainList.addToMainList();
+    });
 
+    document.querySelector('.main-list-items').addEventListener('click', e => {
+      if (e.target.className == 'delete-main-list-item') {
+        MainList.deleteItem(e);
+      } else if (
+        /item/.test(e.target.id) ||
+        /item/.test(e.target.parentNode.id)
+      ) {
+        subList.removeCurrentSubList(e);
+        SubList.displaySubList(e);
+      }
+    });
+
+    document
+      .querySelector('.todo-items-container')
+      .addEventListener('keypress', e => {
+        SubList.saveChanges(e);
+      });
+    document.querySelector('.create-task-btn').addEventListener('click', e => {
+      SubList.addToSubList(e);
+    });
+    document.querySelector('.sub-input').addEventListener('keypress', e => {
+      if (e.keyCode === 13) SubList.addToSubList(e);
+    });
     document
       .querySelector('.todo-tasks-container')
       .addEventListener('click', e => {
@@ -28,47 +51,6 @@ class EventListener {
         } else if (e.target.id === 'save-changes') {
           SubList.saveChanges(e);
         }
-      });
-
-    document
-      .querySelector('.main-list-container')
-      .addEventListener('keypress', e => {
-        console.log('in the top', e);
-      });
-    document
-      .querySelector('.main-list-container')
-      .addEventListener('click', e => {
-        console.log('in the top', e);
-      });
-    document.querySelector('#create-task-btn').addEventListener('click', e => {
-      console.log('here');
-      SubList.addToSubList(e);
-    });
-    document.querySelector('#sub-input').addEventListener('keypress', e => {
-      if (e.keyCode === 13) SubList.addToSubList(e);
-    });
-    document.querySelector('.main-list-items').addEventListener('click', e => {
-      console.log('comeshere', e);
-      console.log(/item/.test(e.target.parentNode.id));
-      if (e.toElement.id == 'delete-main-list-item') {
-        MainList.deleteItem(e);
-      } else if (/item/.test(e.target.id)) {
-        console.log('old state', globalStore.state);
-
-        subList.removeCurrentSubList(e);
-        SubList.displaySubList(e);
-      }
-    });
-
-    document.querySelector('#enter_data').addEventListener('click', e => {
-      console.log(e);
-      MainList.addToMainList();
-    });
-    document
-      .querySelector('#list-name-input')
-      .addEventListener('keypress', e => {
-        console.log(e.keyCode);
-        if (e.keyCode === 13) MainList.addToMainList();
       });
   }
 }
