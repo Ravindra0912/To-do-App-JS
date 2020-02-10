@@ -10,19 +10,21 @@ class SubList {
       .insertAdjacentHTML('beforeend', markup);
   }
   removeCurrentSubList(e) {
-    if (globalStore.state !== null) {
-      let element = document.getElementById(globalStore.state);
+    if (globalStore.selectedList !== null) {
+      let element = document.getElementById(globalStore.selectedList);
       element.classList.remove('active');
     }
-    globalStore.state = e.target.id ? e.target.id : e.target.parentElement.id; // identifier for current element is in the parent div
+    globalStore.selectedList = e.target.id
+      ? e.target.id
+      : e.target.parentElement.id; // identifier for current element is in the parent div
 
     if (document.querySelector('.list-name')) {
       let parent = document.querySelector('.list-name-container');
       let child = document.querySelector('.list-name');
       parent.removeChild(child);
     }
-    document.querySelector('#sub-input').focus();
-    if (globalStore.state !== null) {
+    document.querySelector('.sub-input').focus();
+    if (globalStore.selectedList !== null) {
       if (e.target.id) {
         document
           .querySelector('.list-name-container')
@@ -47,9 +49,9 @@ class SubList {
     else
       return `<div id=${id} class = "sub-task-item flex"><input type="checkbox" id="strike"><div class="sublist-text-box" contentEditable="true" >${value}</div> <button id="delete-tasks">delete</button></div>`;
   }
-  strikeAll(e) {
+  strikeAll() {
     let selectedList = globalStore.listItems.find(elem => {
-      return elem.id === globalStore.state;
+      return elem.id === globalStore.selectedList;
     });
     selectedList.sublist.forEach(elem => {
       elem.striked = true;
@@ -61,17 +63,17 @@ class SubList {
     parent.insertAdjacentHTML('beforeend', temp);
     selectedList.sublist.forEach(elem => this.renderSublist(elem));
   }
-  deleteAll(e) {
+  deleteAll() {
     let listItemsToBeDeleted = globalStore.listItems.find(
-      elem => elem.id === globalStore.state
+      elem => elem.id === globalStore.selectedList
     );
     console.log(listItemsToBeDeleted);
     listItemsToBeDeleted.sublist = [];
-    this.displaySubList([]);
+    this.displaySubList();
   }
   strikeItem(e) {
     let selectedList = globalStore.listItems.find(elem => {
-      return elem.id === globalStore.state;
+      return elem.id === globalStore.selectedList;
     });
     let currentTask = selectedList.sublist.find(
       elem => elem.id === e.target.parentElement.id
@@ -80,8 +82,8 @@ class SubList {
       e.target.nextElementSibling.contentEditable = 'false';
 
       currentTask.striked = true;
-      let z = e.target.nextElementSibling.textContent.strike();
-      e.target.nextElementSibling.innerHTML = z;
+      let strikedText = e.target.nextElementSibling.textContent.strike();
+      e.target.nextElementSibling.innerHTML = strikedText;
       document.querySelector('.sublist-text-box');
     } else if (!e.target.checked) {
       e.target.nextElementSibling.contentEditable = 'true';
@@ -91,26 +93,28 @@ class SubList {
     }
   }
   deleteItem(e) {
+    console.log('check', e);
     let temp = globalStore.listItems.find(
-      elem => elem.id === globalStore.state
+      elem => elem.id === globalStore.selectedList
     );
-    let i = globalStore.listItems.indexOf(temp);
-    globalStore.listItems[i].sublist.forEach((elem, j, listItems) => {
-      if (elem.id === e.path[1].id) {
-        listItems.splice(j, 1);
+    let index = globalStore.listItems.indexOf(temp);
+    globalStore.listItems[index].sublist.forEach((elem, i, arr) => {
+      if (elem.id === e.target.parentElement.id) {
+        arr.splice(i, 1);
       }
     });
-
-    let element = document.getElementById(e.path[1].id);
+    let element = document.getElementById(e.target.parentNode.id);
     element && element.parentElement.removeChild(element);
   }
 
   addToSubList() {
     let subEntry = {};
-    let a = globalStore.listItems.filter(elem => elem.id === globalStore.state);
+    let a = globalStore.listItems.filter(
+      elem => elem.id === globalStore.selectedList
+    );
     let elem = a[0];
-    let input = document.querySelector('#sub-input').value;
-    document.querySelector('#sub-input').value = '';
+    let input = document.querySelector('.sub-input').value;
+    document.querySelector('.sub-input').value = '';
     subEntry.value = input;
     subEntry.id = Date.now() + '-sub-item';
     subEntry.striked = false;
@@ -123,7 +127,7 @@ class SubList {
 
   saveChanges(e) {
     let currentListSelected = globalStore.listItems.find(
-      elem => elem.id === globalStore.state
+      elem => elem.id === globalStore.selectedList
     );
     let reqdElement = currentListSelected.sublist.find(
       elem => elem.id === e.target.parentNode.id
@@ -145,11 +149,11 @@ class SubList {
     });
     console.log('currentElem', currentElement);
     if (currentElement) {
-      globalStore.state = currentElement.id;
+      globalStore.selectedList = currentElement.id;
     }
     currentElement &&
       currentElement.sublist.forEach(elem => this.renderSublist(elem));
-    let element = document.getElementById(globalStore.state);
+    let element = document.getElementById(globalStore.selectedList);
     element.classList.add('active');
   }
 }

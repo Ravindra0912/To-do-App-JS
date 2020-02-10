@@ -4,8 +4,8 @@ import SubList from './subList';
 class MainList {
   deleteItem(e) {
     if (
-      e.target.parentElement.id === globalStore.state &&
-      globalStore.state !== null
+      e.target.parentElement.id === globalStore.selectedList &&
+      globalStore.selectedList !== null
     ) {
       let parent = document.querySelector('.list-name-container');
       let child = document.querySelector('.list-name');
@@ -13,8 +13,8 @@ class MainList {
     }
     let element = document.getElementById(e.target.parentElement.id);
     element && element.parentElement.removeChild(element);
-    if (e.target.parentElement.id === globalStore.state) {
-      globalStore.state = null;
+    if (e.target.parentElement.id === globalStore.selectedList) {
+      globalStore.selectedList = null;
       SubList.displaySubList(null);
     }
   }

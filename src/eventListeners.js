@@ -1,13 +1,11 @@
 import MainList from './listModules/mainlList';
 import SubList from './listModules/subList';
-import globalStore from './store';
 import subList from './listModules/subList';
 class EventListener {
   setupEventListeners() {
     document
       .querySelector('.list-name-input')
       .addEventListener('keypress', e => {
-        // console.log(e.keyCode);
         if (e.keyCode === 13) MainList.addToMainList();
       });
     document.querySelector('.add-listname-btn').addEventListener('click', e => {
@@ -15,27 +13,29 @@ class EventListener {
       MainList.addToMainList();
     });
 
-    document.querySelector('.todo-items-container').addEventListener(
-      'keypress',
-      e => {
-        // e.stopPropagation();
-        SubList.saveChanges(e);
-      },
-      false
-    );
-
     document.querySelector('.main-list-items').addEventListener('click', e => {
       if (e.target.className == 'delete-main-list-item') {
         MainList.deleteItem(e);
-      } else if (/item/.test(e.target.id)) {
+      } else if (
+        /item/.test(e.target.id) ||
+        /item/.test(e.target.parentNode.id)
+      ) {
         subList.removeCurrentSubList(e);
-        SubList.displaySubList(e);
-      } else if (/item/.test(e.target.parentNode.id)) {
-        SubList.removeCurrentSubList(e);
         SubList.displaySubList(e);
       }
     });
 
+    document
+      .querySelector('.todo-items-container')
+      .addEventListener('keypress', e => {
+        SubList.saveChanges(e);
+      });
+    document.querySelector('.create-task-btn').addEventListener('click', e => {
+      SubList.addToSubList(e);
+    });
+    document.querySelector('.sub-input').addEventListener('keypress', e => {
+      if (e.keyCode === 13) SubList.addToSubList(e);
+    });
     document
       .querySelector('.todo-tasks-container')
       .addEventListener('click', e => {
@@ -52,14 +52,6 @@ class EventListener {
           SubList.saveChanges(e);
         }
       });
-
-    document.querySelector('#create-task-btn').addEventListener('click', e => {
-      console.log('here');
-      SubList.addToSubList(e);
-    });
-    document.querySelector('#sub-input').addEventListener('keypress', e => {
-      if (e.keyCode === 13) SubList.addToSubList(e);
-    });
   }
 }
 
