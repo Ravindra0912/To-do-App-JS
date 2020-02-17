@@ -71,7 +71,7 @@ const addToMainList = () => {
     globalStore().arr[globalStore().arr.length - 1].value
   } <button class="delete">Delete</button></li>`;
   document
-    .querySelector('.main-list-items')
+    .querySelector('.main-list-item')
     .insertAdjacentHTML('beforeend', markup);
 };
 const saveChanges = e => {
@@ -95,7 +95,7 @@ const setupEventListeners = () => {
     addToSubList(e);
   });
 
-  document.querySelector('.main-list-items').addEventListener('click', e => {
+  document.querySelector('.main-list-item').addEventListener('click', e => {
     if (e.toElement.id == '') {
       deleteItem(e);
     }

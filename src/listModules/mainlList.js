@@ -25,13 +25,13 @@ class MainList {
     (entry.id = Date.now() + '-item'),
       (entry.value = input),
       globalStore.listItems.push(entry);
-    const markup = `<div class="main-list-item flex" id="${
+    const markup = `<div class="main-list-item-container flex" id="${
       globalStore.listItems[globalStore.listItems.length - 1].id
     }"><div>${
       globalStore.listItems[globalStore.listItems.length - 1].value
-    }</div><button class="delete-main-list-item">Delete</button></div>`;
+    }</div><button class="delete-main-list-item-container">Delete</button></div>`;
     document
-      .querySelector('.main-list-items')
+      .querySelector('.main-list-item')
       .insertAdjacentHTML('beforeend', markup);
   }
 }

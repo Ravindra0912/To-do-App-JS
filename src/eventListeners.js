@@ -13,8 +13,8 @@ class EventListener {
       MainList.addToMainList();
     });
 
-    document.querySelector('.main-list-items').addEventListener('click', e => {
-      if (e.target.className == 'delete-main-list-item') {
+    document.querySelector('.main-list-item').addEventListener('click', e => {
+      if (e.target.className == 'delete-main-list-item-container') {
         MainList.deleteItem(e);
       } else if (
         /item/.test(e.target.id) ||
@@ -36,22 +36,20 @@ class EventListener {
     document.querySelector('.sub-input').addEventListener('keypress', e => {
       if (e.keyCode === 13) SubList.addToSubList(e);
     });
-    document
-      .querySelector('.todo-tasks-container')
-      .addEventListener('click', e => {
-        console.log('check', e.target.id);
-        if (e.target.id === 'strike-all') {
-          SubList.strikeAll(e);
-        } else if (e.target.id === 'delete-all') {
-          SubList.deleteAll(e);
-        } else if (e.target.id === 'delete-tasks') {
-          SubList.deleteItem(e);
-        } else if (e.target.id === 'strike') {
-          SubList.strikeItem(e);
-        } else if (e.target.id === 'save-changes') {
-          SubList.saveChanges(e);
-        }
-      });
+    document.querySelector('.todo-tasks-div').addEventListener('click', e => {
+      console.log('check', e.target.id);
+      if (e.target.id === 'strike-all') {
+        SubList.strikeAll(e);
+      } else if (e.target.id === 'delete-all') {
+        SubList.deleteAll(e);
+      } else if (e.target.id === 'delete-tasks') {
+        SubList.deleteItem(e);
+      } else if (e.target.id === 'strike') {
+        SubList.strikeItem(e);
+      } else if (e.target.id === 'save-changes') {
+        SubList.saveChanges(e);
+      }
+    });
   }
 }
 
