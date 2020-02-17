@@ -45,9 +45,9 @@ class SubList {
 
   getSublistItemHTML(id, value, striked) {
     if (striked)
-      return `<div id=${id} class = "sub-task-item flex" ><input type="checkbox" checked="true" id="strike"><div class="sublist-text-box"><strike>${value}</strike></div><button id="delete-tasks">delete</button></div>`;
+      return `<div id=${id} class = "todo-task-item flex" ><input type="checkbox" checked="true" id="strike"><div class="sublist-text-box"><strike>${value}</strike></div><button id="delete-tasks">delete</button></div>`;
     else
-      return `<div id=${id} class = "sub-task-item flex"><input type="checkbox" id="strike"><div class="sublist-text-box" contentEditable="true" >${value}</div> <button id="delete-tasks">delete</button></div>`;
+      return `<div id=${id} class = "todo-task-item flex"><input type="checkbox" id="strike"><div class="sublist-text-box" contentEditable="true" >${value}</div> <button id="delete-tasks">delete</button></div>`;
   }
   strikeAll() {
     let selectedList = globalStore.listItems.find(elem => {
@@ -147,7 +147,6 @@ class SubList {
       if (e.target.id) return e.target && elem.id === e.target.id;
       else return e.target.parentElement.id === elem.id;
     });
-    console.log('currentElem', currentElement);
     if (currentElement) {
       globalStore.selectedList = currentElement.id;
     }
